@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dummy Project</title>
+</head>
+<body>
+    <form action="/" method="POST">
+        <input type="text" name="name" placeholder="name">
+        <input type="number" step="0.1" min="0.0" max="10.0" name="cgpa" placeholder="cgpa">
+        <input type="number" min="<%=(year-2)%>" max="<%=year%>" name="yog" placeholder="graduation yr">
+        <input type="text" name="branch" placeholder="branch">
+        <button type="submit">Submit</button>
+    </form>
+
+    <br><br><br>
+
+    <table>
+        <th>
+            name
+        </th>
+        <th>
+            cgpa   
+        </th>
+        <th>
+            yog     
+        </th>
+        <th>
+            branch
+        </th>
+        <th>
+            
+        </th>
+        <%console.log(records.length);%>
+        <%for(let i=0;i<records.length;i++){%>
+            <tr>
+                <td><%=records[i].name%></td>
+                <td><%=records[i].cgpa%></td>
+                <td><%=records[i].yog%></td>
+                <td><%=records[i].branch%></td>
+                <td>
+                    <form action="/<%=records[i]._id%>/delete" method="POST">
+                        <button type="submit">delete</button>
+                    </form>
+                </td>
+            </tr>
+        <%}%>
+
+    </table>
+    
+
+</body>
+</html>
