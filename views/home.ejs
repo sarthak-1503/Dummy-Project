@@ -35,13 +35,41 @@
         </th>
         <%console.log(records.length);%>
         <%for(let i=0;i<records.length;i++){%>
-            <tr>
-                <td><%=records[i].name%></td>
-                <td><%=records[i].cgpa%></td>
-                <td><%=records[i].yog%></td>
-                <td><%=records[i].branch%></td>
+            <tr>        
                 <td>
-                    <form action="/<%=records[i]._id%>/delete" method="POST">
+                    <%if(records[i].name != "" && records[i].name != null){%>
+                        <%=records[i].name%></td>    
+                    <%}else{%>
+                        N.A.    
+                    <%}%>
+                </td>
+                    
+                <td>
+                    <%if(records[i].cgpa != 0 && records[i].cgpa != null){%>
+                        <%=records[i].cgpa%></td>    
+                    <%}else{%>
+                        N.A.    
+                    <%}%>
+                </td>
+                    
+                <td>
+                    <%if(records[i].yog != 0 && records[i].yog != null){%>
+                        <%=records[i].yog%></td>    
+                    <%}else{%>
+                        N.A.    
+                    <%}%>
+                </td>
+                    
+                <td>
+                    <%if(records[i].branch != "" && records[i].branch != null){%>
+                        <%=records[i].branch%></td>    
+                    <%}else{%>
+                        N.A.    
+                    <%}%>
+                </td>
+
+                <td>
+                    <form action="/delete/<%=records[i]._id%>" method="POST">
                         <button type="submit">delete</button>
                     </form>
                 </td>

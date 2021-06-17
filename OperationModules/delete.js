@@ -2,10 +2,10 @@
 let express = require('express');
 let Student = require('../models/StudentModel');
 
-module.exports = function(record) {
+module.exports = function(sid) {
 
-    Student.deleteOne(
-        record
+    Student.findByIdAndRemove(
+        sid
     ).then(()=> {
         console.log('record updated!!');
     }).catch(error => {

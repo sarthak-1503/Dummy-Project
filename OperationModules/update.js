@@ -2,10 +2,10 @@
 let express = require('express');
 let Student = require('../models/StudentModel');
 
-module.exports = function(record,details) {
+module.exports = function(details) {
 
     Student.updateOne(
-        record, {$set : details}
+        {name:details.name}, {$set : details}
     ).then(()=> {
         console.log('record updated!!');
     }).catch(error => {
