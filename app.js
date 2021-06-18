@@ -48,72 +48,72 @@ mongoose.connect(dbUrl,{
 });
 
 
-Student.insertMany([
-    {
-        name : 'ABC',
-        cgpa : 8.5,
-        yog : 2022,
-        branch : 'COE'
-    },
-    {
-        name : 'DEF',
-        cgpa : 8.6,
-        yog : 2022,
-        branch : 'MCE'
-    },
-    {
-        name : 'GHI',
-        cgpa : 8.7,
-        yog : 2022,
-        branch : 'COE'
-    },
-    {
-        name : 'JKL',
-        cgpa : 8.5,
-        yog : 2022,
-        branch : 'SE'
-    },
-    {
-        name : 'MNO',
-        cgpa : 8.4,
-        yog : 2022,
-        branch : 'COE'
-    },
-    {
-        name : 'PQR',
-        cgpa : 8.3,
-        yog : 2022,
-        branch : 'SE'
-    },
-    {
-        name : 'STU',
-        cgpa : 8.5,
-        yog : 2022,
-        branch : 'MCE'
-    },
-    {
-        name : 'VWX',
-        cgpa : 9.0,
-        yog : 2022,
-        branch : 'COE'
-    },
-    {
-        name : 'YZA',
-        cgpa : 8.8,
-        yog : 2022,
-        branch : 'SE'
-    },
-    {
-        name : 'BCD',
-        cgpa : 9.2,
-        yog : 2022,
-        branch : 'MCE'
-    }
-]).then(()=> {
-    console.log("Insertion of data successful!!");
-}).catch((error)=> {
-    console.log(error);
-});
+// Student.insertMany([
+//     {
+//         name : 'ABC',
+//         cgpa : 8.5,
+//         yog : 2022,
+//         branch : 'COE'
+//     },
+//     {
+//         name : 'DEF',
+//         cgpa : 8.6,
+//         yog : 2022,
+//         branch : 'MCE'
+//     },
+//     {
+//         name : 'GHI',
+//         cgpa : 8.7,
+//         yog : 2022,
+//         branch : 'COE'
+//     },
+//     {
+//         name : 'JKL',
+//         cgpa : 8.5,
+//         yog : 2022,
+//         branch : 'SE'
+//     },
+//     {
+//         name : 'MNO',
+//         cgpa : 8.4,
+//         yog : 2022,
+//         branch : 'COE'
+//     },
+//     {
+//         name : 'PQR',
+//         cgpa : 8.3,
+//         yog : 2022,
+//         branch : 'SE'
+//     },
+//     {
+//         name : 'STU',
+//         cgpa : 8.5,
+//         yog : 2022,
+//         branch : 'MCE'
+//     },
+//     {
+//         name : 'VWX',
+//         cgpa : 9.0,
+//         yog : 2022,
+//         branch : 'COE'
+//     },
+//     {
+//         name : 'YZA',
+//         cgpa : 8.8,
+//         yog : 2022,
+//         branch : 'SE'
+//     },
+//     {
+//         name : 'BCD',
+//         cgpa : 9.2,
+//         yog : 2022,
+//         branch : 'MCE'
+//     }
+// ]).then(()=> {
+//     console.log("Insertion of data successful!!");
+// }).catch((error)=> {
+//     console.log(error);
+// });
 
 app.get('/',async(req,res)=> {
 
