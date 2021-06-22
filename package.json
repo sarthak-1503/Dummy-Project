@@ -4,6 +4,7 @@
   "description": "",
   "main": "app.js",
   "dependencies": {
+    "accesscontrol": "^2.2.1",
     "body-parser": "^1.19.0",
     "connect-mongo": "^4.4.1",
     "dotenv": "^10.0.0",

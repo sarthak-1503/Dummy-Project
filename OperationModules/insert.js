@@ -1,6 +1,7 @@
 
 let express = require('express');
 let Student = require('../models/StudentModel');
+let ac = require('../AccessControlModule/grantpermissions');
 
 module.exports = function(details) {
 

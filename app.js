@@ -10,6 +10,8 @@ let nodemon = require('nodemon');
 let session = require('express-session');
 let MongoStore = require('connect-mongo');
 let Student = require('./models/StudentModel');
+let middleware = require('./Middlewares/middleware');
+let ac = require('./AccessControlModule/grantpermissions');
 let app = express();
 
 app.set('view engine','ejs');
@@ -48,127 +50,99 @@ mongoose.connect(dbUrl,{
 });
 
 
-// Student.insertMany([
-//     {
-//         name : 'ABC',
-//         cgpa : 8.5,
-//         yog : 2022,
-//         branch : 'COE'
-//     },
-//     {
-//         name : 'DEF',
-//         cgpa : 8.6,
-//         yog : 2022,
-//         branch : 'MCE'
-//     },
-//     {
-//         name : 'GHI',
-//         cgpa : 8.7,
-//         yog : 2022,
-//         branch : 'COE'
-//     },
-//     {
-//         name : 'JKL',
-//         cgpa : 8.5,
-//         yog : 2022,
-//         branch : 'SE'
-//     },
-//     {
-//         name : 'MNO',
-//         cgpa : 8.4,
-//         yog : 2022,
-//         branch : 'COE'
-//     },
-//     {
-//         name : 'PQR',
-//         cgpa : 8.3,
-//         yog : 2022,
-//         branch : 'SE'
-//     },
-//     {
-//         name : 'STU',
-//         cgpa : 8.5,
-//         yog : 2022,
-//         branch : 'MCE'
-//     },
-//     {
-//         name : 'VWX',
-//         cgpa : 9.0,
-//         yog : 2022,
-//         branch : 'COE'
-//     },
-//     {
-//         name : 'YZA',
-//         cgpa : 8.8,
-//         yog : 2022,
-//         branch : 'SE'
-//     },
-//     {
-//         name : 'BCD',
-//         cgpa : 9.2,
-//         yog : 2022,
-//         branch : 'MCE'
-//     }
-// ]).then(()=> {
-//     console.log("Insertion of data successful!!");
-// }).catch((error)=> {
-//     console.log(error);
-// });
-
 app.get('/',async(req,res)=> {
 
     let records = await Student.find({}).catch(error => {
         console.log(error);
     });
 
-    res.render('home',{year: new Date().getFullYear(),records : records});
+    res.render('home',{year: new Date().getFullYear()+1,records : records});
 });
 
-app.post('/',async(req,res)=> {
+// Checking roles and permissions for the concerned user
+//create login for each user (bcrypt) and check for user permissions after login using accessControl
+// const ac = new AccessControl(grants);
+// // ...
+// router.get('/videos/:title', function (req, res, next) {
+//     const permission = ac.can(req.user.role).readAny('video');
+//     if (permission.granted) {
+//         Video.find(req.params.title, function (err, data) {
+//             if (err || !data) return res.status(404).end();
+//             // filter data by permission attributes and send.
+//             res.json(permission.filter(data));
+//         });
+//     } else {
+//         // resource is forbidden for this user/role
+//         res.status(403).end();
+//     }
+// });
+
+app.post('/add',async(req,res)=> {
     
-    let details = {};
-
-    if(req.body.name != "" && req.body.name != null) {
-        details.name = req.body.name;
-    }
-
-    if(req.body.cgpa != 0 && req.body.cgpa != null) {
-        details.cgpa = req.body.cgpa;
-    }
-
-    if(req.body.yog != null && req.body.yog != 0) {
-        details.yog = req.body.yog;
-    }
-
-    if(req.body.branch != "" && req.body.branch != null) {
-        details.branch = req.body.branch;
-    }
-
-    let record = await Student.findOne(
-        {name : req.body.name}
-    ).catch(err => {
+    let {name,cgpa,yog,branch} = req.body;
+    let record = await Student.find({}).catch(err => {
         console.log(err);
     });
+    let id;
+    console.log(record);
+    
+    if(record.length == 0)
+    {
+        id = 1;
+    }
+    else
+    {
+        id = record[record.length-1].id+1;
+    }
 
-    if(record) {
-        let updateRecords = require('./OperationModules/update');
-        updateRecords(details);
-    }
-    else {
-        let insertRecords = require('./OperationModules/insert');
-        insertRecords(details);
-    }
+    let details = {
+        id,
+        name,
+        cgpa,
+        yog,
+        branch
+    };
+
+    let insertRecords = require('./OperationModules/insert');
+    insertRecords(details);
+    console.log(details);
+
+    let permissions = ac.can('employee').readOwn('resource');
+    console.log(permissions.granted);
 
     res.redirect('/');
 });
 
+app.get('/update/:id',async(req,res)=> {
+    
+    let sid = req.params.id;
+    let record = await Student.findById(sid).catch(err => {
+        console.log(err);
+    });
+    res.render('updateData',{record: record,year:new Date().getFullYear()+1});
+});
+
+app.post('/update/:id',(req,res)=> {
+
+    let sid = req.params.id;
+    let {name,cgpa,yog,branch} = req.body;
+    let details = {
+        name,
+        cgpa,
+        yog,
+        branch
+    };
+
+    let updateRecords = require('./OperationModules/update');
+    updateRecords(sid,details);
+    res.redirect('/');
+})
+
 app.post('/delete/:id',(req,res)=> {
 
     let sid = req.params.id;
-
     let deleteRecord = require('./OperationModules/delete');
     deleteRecord(sid);
-
     res.redirect('/');
 });
 

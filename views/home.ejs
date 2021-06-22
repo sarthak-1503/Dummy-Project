@@ -7,11 +7,19 @@
     <title>Dummy Project</title>
 </head>
 <body>
-    <form action="/" method="POST">
-        <input type="text" name="name" placeholder="name">
-        <input type="number" step="0.1" min="0.0" max="10.0" name="cgpa" placeholder="cgpa">
-        <input type="number" min="<%=(year-2)%>" max="<%=year%>" name="yog" placeholder="graduation yr">
-        <input type="text" name="branch" placeholder="branch">
+    <form action="/add" method="POST">
+        <div>
+            <input type="text" name="name" placeholder="name" required>
+        </div>
+        <div>
+            <input type="number" step="0.1" min="-0.1" max="10.0" name="cgpa" placeholder="cgpa" required>
+        </div>
+        <div>
+            <input type="number" min="<%=(year-2)%>" max="<%=year%>" name="yog" placeholder="graduation yr" required>
+        </div>
+        <div>
+            <input type="text" name="branch" placeholder="branch" required>
+        </div>
         <button type="submit">Submit</button>
     </form>
 
@@ -36,38 +44,26 @@
         <%for(let i=0;i<records.length;i++){%>
             <tr>        
                 <td>
-                    <%if(records[i].name != "" && records[i].name != null){%>
-                        <%=records[i].name%></td>    
-                    <%}else{%>
-                        N.A.    
-                    <%}%>
+                    <%=records[i].name%></td>    
                 </td>
                     
                 <td>
-                    <%if(records[i].cgpa != 0 && records[i].cgpa != null){%>
-                        <%=records[i].cgpa%></td>    
-                    <%}else{%>
-                        N.A.    
-                    <%}%>
+                    <%=records[i].cgpa%></td>    
                 </td>
                     
                 <td>
-                    <%if(records[i].yog != 0 && records[i].yog != null){%>
-                        <%=records[i].yog%></td>    
-                    <%}else{%>
-                        N.A.    
-                    <%}%>
+                    <%=records[i].yog%></td>    
                 </td>
                     
                 <td>
-                    <%if(records[i].branch != "" && records[i].branch != null){%>
-                        <%=records[i].branch%></td>    
-                    <%}else{%>
-                        N.A.    
-                    <%}%>
+                    <%=records[i].branch%></td>    
                 </td>
 
                 <td>
+                    <form action="/update/<%=records[i]._id%>" method="GET">
+                        <button type="submit">update</button>
+                    </form>
+
                     <form action="/delete/<%=records[i]._id%>" method="POST">
                         <button type="submit">delete</button>
                     </form>
