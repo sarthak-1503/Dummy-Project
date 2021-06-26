@@ -1,11 +1,11 @@
 
 let express = require('express');
-let Student = require('../models/StudentModel');
+let Employee = require('../models/EmployeeModel');
 let ac = require('../AccessControlModule/grantpermissions');
 
 module.exports = function(details) {
 
-    Student.create(
+    Employee.create(
         details
     ).then(()=> {
         console.log('New record created!!');

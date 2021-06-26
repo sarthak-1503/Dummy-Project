@@ -1,0 +1,45 @@
+<%- include('./partials/header') %>
+
+    <form onsubmit="return checkEquality()" action="/signup" method="POST">
+        <div>
+            <input type="text" id="fname" placeholder="First Name" name="fname" required>
+        </div>
+        <div>
+            <input type="text" id="lname" placeholder="Last Name" name="lname" required>
+        </div>
+        <div>
+            <input type="text" id="username" placeholder="Username" name="username" required>
+        </div>
+        <div>
+            <input type="email" id="email" placeholder="Email" name="email" required>
+        </div> 
+        <div>
+            <input type="password" id="password" placeholder="Create Password" name="password" required>
+        </div>
+        <div>
+            <input type="password" id="confirm" placeholder="Confirm Password" name="confirmpass" required>
+        </div>
+        <div>
+            <button type="submit" id="submit">Signup</button>
+        </div>
+    </form>
+
+    <script>
+
+        function checkEquality() {
+            let password = document.querySelector('#password');
+            let confirmpass = document.querySelector('#confirm');
+
+            if(JSON.stringify(password) != JSON.stringify(confirmpass)) {
+                console.log('Passwords do not match!');
+                console.log(password,confirmpass);
+                alert('Passwords do not match!');
+                return false;
+            }
+
+            return true;
+        }
+
+    </script>
+
+<%- include('./partials/footer') %>

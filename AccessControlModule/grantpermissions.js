@@ -14,7 +14,4 @@ ac.grant('admin')
     .updateAny('resource')
     .deleteAny('resource')
 
-// const permission = ac.can('admin').readAny('resource');
-// console.log(permission.granted);
-
 module.exports = ac;

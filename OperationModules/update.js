@@ -1,10 +1,10 @@
 
 let express = require('express');
-let Student = require('../models/StudentModel');
+let Employee = require('../models/EmployeeModel');
 
 module.exports = function(sid,details) {
 
-    Student.findByIdAndUpdate(
+    Employee.findByIdAndUpdate(
         sid, {$set : details}
     ).then(()=> {
         console.log('record updated!!');

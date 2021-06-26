@@ -1,62 +1,47 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dummy Project</title>
-</head>
-<body>
-    <form action="/add" method="POST">
-        <div>
-            <input type="text" name="name" placeholder="name" required>
-        </div>
-        <div>
-            <input type="number" step="0.1" min="-0.1" max="10.0" name="cgpa" placeholder="cgpa" required>
-        </div>
-        <div>
-            <input type="number" min="<%=(year-2)%>" max="<%=year%>" name="yog" placeholder="graduation yr" required>
-        </div>
-        <div>
-            <input type="text" name="branch" placeholder="branch" required>
-        </div>
-        <button type="submit">Submit</button>
-    </form>
+<%- include('./partials/header') %>
 
-    <br><br><br>
+    <div id="login">
+        <button onclick="window.location.href='/login'">Login</button>
+        <button onclick="window.location.href='/signup'">Signup</button>
+    </div>
 
     <table>
         <th>
-            name
+            ID
         </th>
         <th>
-            cgpa   
+            First Name
         </th>
         <th>
-            yog     
+            Last Name
         </th>
         <th>
-            branch
+            Username
         </th>
         <th>
+            Email
+        </th>
             
-        </th>
         <%for(let i=0;i<records.length;i++){%>
             <tr>        
                 <td>
-                    <%=records[i].name%></td>    
+                    <%=records[i].id%></td>    
+                </td>
+
+                <td>
+                    <%=records[i].fname%></td>    
+                </td>
+
+                <td>
+                    <%=records[i].lname%></td>    
                 </td>
                     
                 <td>
-                    <%=records[i].cgpa%></td>    
+                    <%=records[i].username%></td>    
                 </td>
                     
                 <td>
-                    <%=records[i].yog%></td>    
-                </td>
-                    
-                <td>
-                    <%=records[i].branch%></td>    
+                    <%=records[i].email%></td>    
                 </td>
 
                 <td>
@@ -73,6 +58,4 @@
 
     </table>
     
-
-</body>
-</html>
+<%- include('./partials/footer') %>

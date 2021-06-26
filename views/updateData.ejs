@@ -1,28 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dummy Project</title>
-</head>
-<body>
+<%- include('./partials/header') %>
     
     <form action="/update/<%=record._id%>" method="POST">
         <div>
-            <input type="text" name="name" placeholder="name" value='<%=record.name%>' required>
+            <input type="text" name="username" placeholder="Username" value='<%=record.username%>' required>
         </div>
         <div>
-            <input type="number" step="0.1" min="0.1" max="10.0" name="cgpa" placeholder="cgpa" value='<%=record.cgpa%>' required>
+            <input type="email"name="email" placeholder="Email" value='<%=record.email%>' required>
         </div>
         <div>
-            <input type="number" min="<%=(year-2)%>" max="<%=year%>" name="yog" placeholder="graduation yr" value='<%=record.yog%>' required>
+            <button type="submit">Update</button>
         </div>
-        <div>
-            <input type="text" name="branch" placeholder="branch" value='<%=record.branch%>' required>
-        </div>
-        <button type="submit">Update</button>
     </form>
 
-</body>
-</html>
+<%- include('./partials/footer') %>
