@@ -1,15 +1,28 @@
 
 let express = require('express');
 let Employee = require('../models/EmployeeModel');
-let ac = require('../AccessControlModule/grantpermissions');
+// let ac = require('../AccessControlModule/grantpermissions');
 
-module.exports = function(details) {
+module.exports = async function(details) {
 
-    Employee.create(
-        details
-    ).then(()=> {
-        console.log('New record created!!');
-    }).catch(error => {
-        console.log(error);
+    let record = new Employee(details);
+    await record.save((err)=> {
+        if(err) {
+            console.log(err);
+        }
+        // console.log(record.username);
+        // console.log(record.incr);
+        // console.log(record.email);
+        // console.log(record.fname);
+        // console.log(record.lname);
+        // console.log(err);
     });
+    // Employee.create(details,(err,record)=> {
+        
+    //     if(err) {
+    //         console.log('error : ',err);
+    //     }else{
+    //         console.log(record);
+    //     }
+    // });
 }

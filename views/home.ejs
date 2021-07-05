@@ -1,58 +1,57 @@
 <%- include('./partials/header') %>
 
     <div id="login">
-        <button onclick="window.location.href='/login'">Login</button>
-        <button onclick="window.location.href='/signup'">Signup</button>
+        
+        <%if(empid == null) {%>
+            <button onclick="window.location.href='/login'">Login</button>
+            <button onclick="window.location.href='/signup'">Signup</button>    
+        <%}else{%>
+            <button onclick="window.location.href='/logout'">Logout</button>
+        <%}%>
+        <button onclick="window.location.href='/displayall'">Display all records</button>
     </div>
 
     <table>
-        <th>
-            ID
-        </th>
-        <th>
-            First Name
-        </th>
-        <th>
-            Last Name
-        </th>
-        <th>
-            Username
-        </th>
-        <th>
-            Email
-        </th>
+        <tr>
+            <th>
+                First Name
+            </th>
+            <th>
+                Last Name
+            </th>
+            <th>
+                Username
+            </th>
+            <th>
+                Email
+            </th>
+        </tr>
             
-        <%for(let i=0;i<records.length;i++){%>
-            <tr>        
+        <%if(empid != null) {%>
+            <tr>      
+
                 <td>
-                    <%=records[i].id%></td>    
+                    <%=record.fname%></td>    
                 </td>
 
                 <td>
-                    <%=records[i].fname%></td>    
-                </td>
-
-                <td>
-                    <%=records[i].lname%></td>    
+                    <%=record.lname%></td>    
                 </td>
                     
                 <td>
-                    <%=records[i].username%></td>    
+                    <%=record.username%></td>    
                 </td>
                     
                 <td>
-                    <%=records[i].email%></td>    
+                    <%=record.email%></td>    
                 </td>
 
                 <td>
-                    <form action="/update/<%=records[i]._id%>" method="GET">
+                    <form action="/update/<%=record._id%>" method="GET">
                         <button type="submit">update</button>
                     </form>
-
-                    <form action="/delete/<%=records[i]._id%>" method="POST">
-                        <button type="submit">delete</button>
-                    </form>
                 </td>
+
             </tr>
         <%}%>
 

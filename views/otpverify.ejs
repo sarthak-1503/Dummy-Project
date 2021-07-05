@@ -1,0 +1,24 @@
+<%- include('./partials/header') %>
+
+    <form action="/login" method="POST">
+        <!-- <div id="id">
+            <input type="number" placeholder="id" name="id" required>
+        </div> -->
+        <div>
+            <h1>OTP sent on your mobile no.</h1>
+        </div>
+        <div>
+            <h2>Enter OTP :</h2>
+        </div>
+        <div id="otpdiv">
+            <input type="password" id="otp" placeholder="otp" name="otp" required>
+        </div>
+        <!-- <div id="password">
+            <input type="password" placeholder="Password" name="password" required>
+        </div> -->
+        <div id="submit">
+            <button type="submit">Login</button>
+        </div>
+    </form>
+
+<%- include('./partials/footer') %>

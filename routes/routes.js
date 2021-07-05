@@ -1,20 +1,29 @@
 
+let bcrypt = require('bcrypt');
 let express = require('express');
+let session = require('express-session');
+let encrypt = require('mongoose-encryption');
 let router = express.Router();
 let Employee = require('../models/EmployeeModel');
-// let keycloak = require('../config/keycloak-config.js').getKeycloak();
 let insertRecords = require('../OperationModules/insert');
 let updateRecords = require('../OperationModules/update');
 let deleteRecord = require('../OperationModules/delete');
-let https = require('https');
+let isLoggedIn = require('../Middlewares/middleware');
 
 router.get('/',async(req,res)=> {
 
-    let records = await Employee.find({}).catch(error => {
-        console.log(error);
-    });
+    console.log(req.session.user_id);
 
-    res.render('home',{records : records});
+    if(req.session.user_id != null) {
+        console.log('Already logged in');
+        let record = await Employee.findOne({_id : req.session.user_id}).lean().sort({incr : -1}).catch(error => {
+            console.log(error);
+        });
+        res.render('home',{record : record, empid: req.session.user_id});
+    } else {
+        console.log('Not logged in yet');
+        res.render('home',{empid: null});
+    }
 });
 
 router.get('/signup',(req,res)=> {
@@ -23,74 +32,160 @@ router.get('/signup',(req,res)=> {
 
 router.post('/signup',async(req,res)=> {
 
-    let {fname,lname,username,email,password,confirmpass} = req.body;
-    let id;
-    let record = await Employee.find({}).catch(err=>{
+    let fname = req.body.fname;
+    let lname = req.body.lname;
+    let username = req.body.username;
+    let email = req.body.email;
+    let password = req.body.password;
+    
+    let records = await Employee.find({}).catch(err=>{
         console.log(err);
     });
 
-    if(record.length == 0) {
-        id = 1;
-    }else{
-        id = record.length + 1;
-    }
+    let saltRounds = 10;
+    let salt = await bcrypt.genSalt(saltRounds).catch(err=> {
+        console.log('salt-error : ', err);
+    });
+    let hash = await bcrypt.hash(password,salt).catch(err=> {
+        console.log('hash-error : ', err);
+    });;
 
     let details = {
-        id,
         fname,
         lname,
-        username,
+        commonname: username,
         email,
-        password
+        password: JSON.stringify(hash),
+        field1: 'a',
+        field2: 'a',
+        field3: 'a',
+        field4: 'a',
+        field5: 'a',
+        field6: 'a',
+        field7: 'a',
+        field8: 'a',
+        field9: 'a',
+        field10: 'a',
+        field11: 'a',
+        field12: 'a',
+        field13: 'a',
+        field14: 'a',
+        field15: 'a',
+        field16: 'a',
+        field17: 'a',
+        field18: 'a',
+        field19: 'a',
+        field20: 'a',
+        field21: 'a',
+        field22: 'a',
+        field23: 'a'
     };
-    
-    insertRecords(details);
-    console.log(details);
 
-    const options = {
-        hostname: 'http://localhost',
-        port: 8080,
-        path: '/auth/admin/realms/Demo/users',
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJEbVh2LXQzWlJNaXFEZDA5WjNrZUNab3hRVUZuQW9IQkV1eHk4QTFyOWdnIn0.eyJleHAiOjE2MjQ3NzMxNzUsImlhdCI6MTYyNDczNzE3OCwianRpIjoiNTMwNmQzNjAtZWNmMS00ZWE1LTgxNGMtNzViM2M4N2JjNTc2IiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL2F1dGgvcmVhbG1zL0RlbW8iLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiNjE5MDkzZGEtZmU1MS00Nzc5LWI1N2MtZjUzMWVkMGQ5NmUzIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiZGVtby1wcm9qZWN0Iiwic2Vzc2lvbl9zdGF0ZSI6IjliNTE0ZDlmLTlhMjItNGVjMi04M2E5LWMyZDVlZGYzNTQ5YSIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiaHR0cDovL2xvY2FsaG9zdDozMDAwIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJvZmZsaW5lX2FjY2VzcyIsImRlZmF1bHQtcm9sZXMtZGVtbyIsInVtYV9hdXRob3JpemF0aW9uIiwiYXBwLXVzZXIiXX0sInJlc291cmNlX2FjY2VzcyI6eyJkZW1vLXByb2plY3QiOnsicm9sZXMiOlsidXNlciJdfSwiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJwcm9maWxlIGVtYWlsIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsInByZWZlcnJlZF91c2VybmFtZSI6ImVtcGxveWVlMSJ9.UhU_c-_Oi71FKPo2pbCtdeYIY-ppF5gcDGTTn1XjyIfIvpcS8YVT8_WAWWWLS2YrjAoRFHKBnJeyB5wD3-bfX6tXeH0skbRhwuAHij-Ieccif5QTn8QucaFuM-a9PO3DWZkVHWelskoSmz6WIAuTjHJ9lgHsz1286Yv5471Of1Zy_CgZ1mz4I_gdn2eHl7Pa_xnc2Rkf362IKWgavEOsv1bBc-SkbVKtqdSpTaTUKzOpL10txxAnJ-hUpUJlDIYJuoktHZNHowz_BfJ6qzmCjSNnacsnoPwKBoSfRzgL_0X7htWIfkGkOEo7qtsir0qChtFAKJBAWccbVDTyBW8VhA'
-        },
-        data_raw: {
-            'First Name': fname,
-            'Second Name': lname,
-            'grant_type':'password',
-            'client_id': 'demo-project',
-            'Username': username,
-            'Email': email
-        }
+    if(records == null) {
+        details.incr = 1;
+    } else {
+        details.incr = records.length + 1;
     }
 
-    console.log(options);
+    details.username = username + JSON.stringify(details.incr);
     
-    const rqst = https.request(options, resp => {
-        console.log(`statusCode: ${resp.statusCode}`);
-    });
-    
-    rqst.on('error', error => {
-        console.error(error);
-    });
+    insertRecords(details);
+    console.log('signup successful!');
+    console.log('Username assigned to you is',details.username);
+
+    // let findRecord = await Employee.find({}).lean().sort({incr : -1}).limit(1).catch(err=> {
+    //     console.log(err);
+    // });
+
+    // console.log(findRecord);
+
+    // req.session.user_id = findRecord._id;
 
     res.redirect('/');
 }); 
 
-router.get('/login',(req,res)=> {
+router.get('/login',async(req,res)=> {
     res.render('login');
 }); 
 
-router.post('/login',(req,res)=> {
-    
+router.post('/login',async(req,res)=> {
+    let username = req.body.username;
+    let password = req.body.password;
+    let searchRecord = new Employee({username,password});
+
+    let records = await Employee.find({}).catch(err=> {
+        console.log(err);
+    });
+
+    records.decrypt((err)=> {
+
+        if(err) {
+            return handleError(err);
+        } 
+
+        console.log(records);
+    });
+
+    records.sort(function(r1,r2) {
+        return (r1.username - r2.username);
+    });
+
+    let record = records.find(searchRecord);
+
+    if(record == undefined) {
+        console.log('Username not found!');
+        res.redirect('/login');
+
+    } else {
+
+        // console.log(record);
+
+        // record.decrypt((err)=> {
+        //     if(err) {
+        //         throw err;
+        //     }
+        //     console.log(record);
+        // }).catch((err)=> {
+        //     console.log(err);
+        // });
+
+        console.log(password,record.password);
+        let check = await bcrypt.compare(password,record.password).catch((err)=> {
+            console.log("password authentication : ",err);
+        });
+
+        if(check == false) {
+            console.log('Password incorrect!');
+            res.redirect('/login');
+        }
+
+        console.log('Login successful!');
+        req.session.user_id = record._id;
+        console.log(req.session.user_id);
+        // res.redirect('/auth');
+        res.redirect('/');
+    }
 }); 
 
-router.get('/update/:id',async(req,res)=> {
+router.get('/auth',isLoggedIn,async(req,res)=> {
+    res.render('otpverify') ;
+});
+
+// yet to be completed
+router.post('/auth',async(req,res)=>{
+    let {otp} = req.body;
+// authentication using bcrypt - done
+//     sha
+// md5
+// encrytion 128
+// or advance 256
+// check for load capacity of database by performing data insertion operations maximum upto 10000 times
+});
+
+router.get('/update/:id',isLoggedIn,async(req,res)=> {
     
-    let id = req.params.id;
-    let record = await Employee.findById(id).catch(err => {
+    let eid = req.params.id;
+    let record = await Employee.findOne({_id:eid}).sort({'incr':1,'username':1}).lean().catch(err => {
         console.log(err);
     });
     res.render('updateData',{record: record});
@@ -98,7 +193,7 @@ router.get('/update/:id',async(req,res)=> {
 
 router.post('/update/:id',(req,res)=> {
 
-    let id = req.params.id;
+    let incr = req.params.id;
     let {username,email} = req.body;
     let details = {
         username,
@@ -109,7 +204,7 @@ router.post('/update/:id',(req,res)=> {
     res.redirect('/');
 })
 
-router.post('/delete/:id',(req,res)=> {
+router.post('/delete/:id',isLoggedIn,(req,res)=> {
 
     let id = req.params.id;
     
