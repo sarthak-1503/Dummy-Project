@@ -30,7 +30,7 @@ router.get('/signup',(req,res)=> {
     res.render('signup');
 }); 
 
-router.post('/signup',async(req,res)=> {
+router.post('/signup',(req,res)=> {
 
     let fname = req.body.fname;
     let lname = req.body.lname;
@@ -38,15 +38,15 @@ router.post('/signup',async(req,res)=> {
     let email = req.body.email;
     let password = req.body.password;
     
-    let records = await Employee.find({}).catch(err=>{
+    let records = Employee.find({}).catch(err=>{
         console.log(err);
     });
 
     let saltRounds = 10;
-    let salt = await bcrypt.genSalt(saltRounds).catch(err=> {
+    let salt = bcrypt.genSalt(saltRounds).catch(err=> {
         console.log('salt-error : ', err);
     });
-    let hash = await bcrypt.hash(password,salt).catch(err=> {
+    let hash = bcrypt.hash(password,salt).catch(err=> {
         console.log('hash-error : ', err);
     });;
 
@@ -104,16 +104,16 @@ router.post('/signup',async(req,res)=> {
     res.redirect('/');
 }); 
 
-router.get('/login',async(req,res)=> {
+router.get('/login',(req,res)=> {
     res.render('login');
 }); 
 
-router.post('/login',async(req,res)=> {
+router.post('/login',(req,res)=> {
     let username = req.body.username;
     let password = req.body.password;
     let searchRecord = new Employee({username,password});
 
-    let records = await Employee.find({}).catch(err=> {
+    let records = Employee.find({}).catch(err=> {
         console.log(err);
     });
 
@@ -150,7 +150,7 @@ router.post('/login',async(req,res)=> {
         // });
 
         console.log(password,record.password);
-        let check = await bcrypt.compare(password,record.password).catch((err)=> {
+        let check = bcrypt.compare(password,record.password).catch((err)=> {
             console.log("password authentication : ",err);
         });
 
@@ -167,7 +167,7 @@ router.post('/login',async(req,res)=> {
     }
 }); 
 
-router.get('/auth',isLoggedIn,async(req,res)=> {
+router.get('/auth',isLoggedIn,(req,res)=> {
     res.render('otpverify') ;
 });
 
@@ -182,10 +182,10 @@ router.post('/auth',async(req,res)=>{
 // check for load capacity of database by performing data insertion operations maximum upto 10000 times
 });
 
-router.get('/update/:id',isLoggedIn,async(req,res)=> {
+router.get('/update/:id',isLoggedIn,(req,res)=> {
     
     let eid = req.params.id;
-    let record = await Employee.findOne({_id:eid}).sort({'incr':1,'username':1}).lean().catch(err => {
+    let record = Employee.findOne({_id:eid}).sort({'incr':1,'username':1}).lean().catch(err => {
         console.log(err);
     });
     res.render('updateData',{record: record});
