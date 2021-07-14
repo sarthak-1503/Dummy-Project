@@ -68,41 +68,41 @@ let insertRecords = require('./OperationModules/insert');
 let t1, t2;
 t1 = new Date().getTime()/1000;
 
-for(let i=1;i<=50000;i++) {
-    insertRecords({
-        id : i,
-        fname: 'john',
-        lname: 'singh',
-        commonname: 'john',
-        username: ('john' + JSON.stringify(i)),
-        email: 'john@gmail.com',
-        password: 'load-testing',
-        field1: 'a',
-        field2: 'a',
-        field3: 'a',
-        field4: 'a',
-        field5: 'a',
-        field6: 'a',
-        field7: 'a',
-        field8: 'a',
-        field9: 'a',
-        field10: 'a',
-        field11: 'a',
-        field12: 'a',
-        field13: 'a',
-        field14: 'a',
-        field15: 'a',
-        field16: 'a',
-        field17: 'a',
-        field18: 'a',
-        field19: 'a',
-        field20: 'a',
-        field21: 'a',
-        field22: 'a',
-        field23: 'a'
-    });
-}
-console.log('Data inserted!');
+// for(let i=1;i<=200000;i++) {
+//     insertRecords({
+//         id : i,
+//         fname: 'john',
+//         lname: 'singh',
+//         commonname: 'john',
+//         username: ('john' + JSON.stringify(i)),
+//         email: 'john@gmail.com',
+//         password: 'load-testing',
+//         field1: 'a',
+//         field2: 'a',
+//         field3: 'a',
+//         field4: 'a',
+//         field5: 'a',
+//         field6: 'a',
+//         field7: 'a',
+//         field8: 'a',
+//         field9: 'a',
+//         field10: 'a',
+//         field11: 'a',
+//         field12: 'a',
+//         field13: 'a',
+//         field14: 'a',
+//         field15: 'a',
+//         field16: 'a',
+//         field17: 'a',
+//         field18: 'a',
+//         field19: 'a',
+//         field20: 'a',
+//         field21: 'a',
+//         field22: 'a',
+//         field23: 'a'
+//     });
+// }
+// console.log('Data inserted!');
 
 t2 = new Date().getTime()/1000 - t1;
 console.log(t2);
