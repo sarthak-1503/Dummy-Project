@@ -19,9 +19,9 @@ let router = require('./routes/routes');
 app.set('view engine','ejs');
 app.use(bodyParser.urlencoded({extended:true}));
 
-const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/studentdb';
+const dbUrl = process.env.DBURL || 'mongodb://localhost:27017/myFirstDatabase';
 const secret = process.env.SECRET || 'betterkeepitasasecret';
-const port = process.env.PORT || 3000;
+let port = process.env.PORT || 3000;
 app.set("port",port);
 
 const store = MongoStore.create({
@@ -68,7 +68,7 @@ let insertRecords = require('./OperationModules/insert');
 let t1, t2;
 t1 = new Date().getTime()/1000;
 
-for(let i=1;i<=10500;i++) {
+for(let i=1;i<=50000;i++) {
     insertRecords({
         id : i,
         fname: 'john',
@@ -124,15 +124,14 @@ app.get('/displayall',async(req,res)=> {
 app.get("/logout",async(req,res)=> {
 
     req.session.destroy();
-
-    // req.logout();
-    // req.session = null;
     console.log('Logged out successfully!')
 
     res.redirect("/");
 });
 
-app.listen(3000,()=> {
-    console.log("The server is connected to ",`${port}`);
+port = Math.floor(Math.random()*9000+1000);
+
+app.listen(port,()=> {
+    console.log("The server is connected to",`${port}`);
 });
 

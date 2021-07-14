@@ -157,8 +157,8 @@ let employeeSchema = new mongoose.Schema({
 });
 employeeSchema.index({incr : 1, username : 1});
 
-let ekey = process.env.E_KEY;
-let skey = process.env.S_KEY;
+let ekey = process.env.EKEY;
+let skey = process.env.SKEY;
 employeeSchema.plugin(encrypt,{encryptionKey:ekey ,signingKey:skey, excludeFromEncryption:['incr']});
 // decryptPostSave:false
 
