@@ -6,9 +6,7 @@ module.exports = function(sid,details) {
 
     Employee.findByIdAndUpdate(
         sid, {$set : details}
-    ).then(()=> {
-        console.log('record updated!!');
-    }).catch(error => {
+    ).catch(error => {
         console.log(error);
     });
 }

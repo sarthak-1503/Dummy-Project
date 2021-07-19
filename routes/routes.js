@@ -26,6 +26,14 @@ router.get('/',async(req,res)=> {
     }
 });
 
+// router.post("/",(req,res)=> {
+//     let details = req.body;
+//     console.log(details);
+
+//     insertRecords(details);
+//     res.redirect('/');
+// });
+
 router.get('/signup',(req,res)=> {
     res.render('signup');
 }); 

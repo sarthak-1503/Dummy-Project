@@ -3,7 +3,7 @@ let mongoose = require('mongoose');
 let encrypt = require('mongoose-encryption');
 
 //Schema
-let employeeSchema = new mongoose.Schema({
+let customerSchema = new mongoose.Schema({
     incr : {
         type: Number,
         required: true,
@@ -155,7 +155,7 @@ let employeeSchema = new mongoose.Schema({
         default: ''
     }
 });
-employeeSchema.index({incr : 1, username : 1});
+customerSchema.index({incr : 1, username : 1});
 
 // let ekey = process.env.EKEY;
 // let skey = process.env.SKEY;
@@ -163,6 +163,6 @@ employeeSchema.index({incr : 1, username : 1});
 // decryptPostSave:false
 
 //Model
-let Employee = mongoose.model('Employees',employeeSchema,'Employee');
+let Customer = mongoose.model('Customer',customerSchema,'Customer');
 
-module.exports = Employee;
+module.exports = Customer;
