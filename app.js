@@ -137,7 +137,7 @@ app.get("/logout",async(req,res)=> {
 
 port = Math.floor(Math.random()*8976+1024);
 
-app.listen(1025,()=> {
-    console.log("The server is connected to",`${1025}`);
+app.listen(port,()=> {
+    console.log("The server is connected to",`${port}`);
 });
 
